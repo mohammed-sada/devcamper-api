@@ -1,29 +1,23 @@
-const bootcamps = require("./bootcamps.mongo");
+const Bootcamp = require("./bootcamps.mongo");
 
-async function findBootcamp(filter) {
-    return await bootcamps.find(filter)
-}
-
-// async function existBootcamp(id) {
-//     return await findBootcamp({
-//         _id: id
-//     })
+// async function findBootcamp(filter) {
+//     return await Bootcamp.find(filter)
 // }
 
 async function getBootcamps() {
-    return await bootcamps.find({}, "-__v");
+    return await Bootcamp.find({}, "-__v");
 }
 
 async function getBootcamp(id) {
-    return await bootcamps.findById(id, "-__v");
+    return await Bootcamp.findById(id, "-__v");
 }
 
 async function createBootcamp(bootcamp) {
-    return await bootcamps.create(bootcamp);
+    return await Bootcamp.create(bootcamp);
 }
 
 async function updateBootcamp(id, bootcamp) {
-    const updatedBootcamp = await bootcamps.updateOne({
+    const updatedBootcamp = await Bootcamp.updateOne({
         _id: id
     }, bootcamp);
 
@@ -31,7 +25,7 @@ async function updateBootcamp(id, bootcamp) {
 }
 
 async function deleteBootcamp(id) {
-    const deletedBootcamp = await bootcamps.deleteOne({
+    const deletedBootcamp = await Bootcamp.deleteOne({
         _id: id
     })
 
