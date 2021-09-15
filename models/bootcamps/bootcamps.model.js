@@ -19,8 +19,7 @@ async function getBootcamp(id) {
 }
 
 async function createBootcamp(bootcamp) {
-    return await bootcamps.create(bootcamp)
-
+    return await bootcamps.create(bootcamp);
 }
 
 async function updateBootcamp(id, bootcamp) {

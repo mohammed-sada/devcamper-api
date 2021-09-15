@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const bootcampsSchema = new mongoose.Schema({
     name: {
@@ -56,7 +57,7 @@ const bootcampsSchema = new mongoose.Schema({
     careers: {
         // Array of strings
         type: [String],
-        required: true,
+        required: [true, "Please set the careers"],
         enum: [
             'Web Development',
             'Mobile Development',
@@ -97,6 +98,14 @@ const bootcampsSchema = new mongoose.Schema({
         default: Date.now
     },
 
+});
+
+// Create bootcamp slug from the name
+bootcampsSchema.pre("save", function (next) { // pre will run before we save the bootcamp to DB
+    this.slug = slugify(this.name); // this refers to the current document being saved
+    next();
 })
+
+
 
 module.exports = mongoose.model("Bootcamp", bootcampsSchema);
