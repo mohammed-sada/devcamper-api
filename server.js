@@ -1,14 +1,14 @@
 const express = require("express");
 const morgan = require("morgan");
-const connectDb = require("./config/db");
-const errorHandler = require("./middleware/error")
+const connectDb = require("./src/config/db");
+const errorHandler = require("./src/middleware/error")
 
 // Load env vars
-require("dotenv").config({ path: "./config/config.env" });
+require("dotenv").config({ path: "./src/config/config.env" });
 require("colors");
 
 // Route files
-const bootcampsRouter = require("./routes/bootcamps.router")
+const bootcampsRouter = require("./src/routes/bootcamps.router")
 
 const app = express();
 
@@ -28,6 +28,8 @@ app.use(errorHandler) // We have to pass it after the router in order for the it
 const PORT = process.env.PORT || 5000;
 
 async function startServer() {
+    console.log("Starting the server and connecting to database...".green.inverse)
+
     // Connect to DB
     await connectDb();
 
