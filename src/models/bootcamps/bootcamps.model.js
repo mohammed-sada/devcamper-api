@@ -10,7 +10,7 @@ async function getBootcampsCount() {
 }
 
 async function getBootcamps(query, sort, select, skip, limit) {
-    return await Bootcamp.find(query).sort(sort).select(select).skip(skip).limit(limit);
+    return await Bootcamp.find(query).sort(sort).select(select).skip(skip).limit(limit).populate("courses");
 }
 
 async function getBootcamp(id) {
@@ -32,7 +32,7 @@ async function updateBootcamp(id, bootcamp) {
 async function deleteBootcamp(id) {
     const deletedBootcamp = await Bootcamp.deleteOne({
         _id: id
-    })
+    });
 
     return deletedBootcamp.deletedCount === 1;
 }
@@ -57,4 +57,4 @@ module.exports = {
     updateBootcamp,
     deleteBootcamp,
     getBootcampsByRadius
-}
+};

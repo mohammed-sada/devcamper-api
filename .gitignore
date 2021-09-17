@@ -1,4 +1,2 @@
 node_modules/
-src/config/config.env
-devcamper_specs.md
-links.md
+/.env

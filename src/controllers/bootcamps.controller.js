@@ -60,19 +60,19 @@ const httpGetBootcamps = asyncHandler(async (req, res, next) => {
         pagination.prev = {
             page: page - 1,
             limit
-        }
+        };
     }
     if (endIndex < total) {
         pagination.next = {
             page: page + 1,
             limit
-        }
+        };
     }
 
     // Excute the query
     const bootcamps = await getBootcamps(query, sortBy, select, startIndex, limit);
     res.status(200).json({ success: true, count: bootcamps.length, pagination, data: bootcamps });
-})
+});
 
 const httpGetBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
@@ -83,12 +83,12 @@ const httpGetBootcamp = asyncHandler(async (req, res, next) => {
 
     }
     res.status(200).json({ success: true, data: bootcamp });
-})
+});
 
 const httpCreateBootcamp = asyncHandler(async (req, res, next) => {
     const createdBootcamp = await createBootcamp(req.body);
     res.status(200).json({ success: true, data: createdBootcamp });
-})
+});
 
 const httpUpdateBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
@@ -97,8 +97,8 @@ const httpUpdateBootcamp = asyncHandler(async (req, res, next) => {
     if (!updatedBootcamp) {
         return next(new ErrorResponse("Nothing was modified", 400));
     }
-    res.status(200).json({ success: true })
-})
+    res.status(200).json({ success: true });
+});
 
 const httpDeleteBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
@@ -108,8 +108,8 @@ const httpDeleteBootcamp = asyncHandler(async (req, res, next) => {
     if (!deletedBootcamp) {
         return next(new ErrorResponse("Nothing was deleted", 400));
     }
-    res.status(200).json({ success: true, data: {} })
-})
+    res.status(200).json({ success: true, data: {} });
+});
 
 const httpGetBootcampsByRadius = asyncHandler(async (req, res, next) => {
     const { zipcode, distance } = req.params;
@@ -119,8 +119,8 @@ const httpGetBootcampsByRadius = asyncHandler(async (req, res, next) => {
         success: true,
         count: bootcamps.length,
         data: bootcamps
-    })
-})
+    });
+});
 
 module.exports = {
     httpGetBootcamps,
@@ -129,4 +129,4 @@ module.exports = {
     httpUpdateBootcamp,
     httpDeleteBootcamp,
     httpGetBootcampsByRadius
-}
+};

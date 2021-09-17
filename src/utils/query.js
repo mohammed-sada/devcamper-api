@@ -9,6 +9,6 @@ function pagination(query) {
     return {
         limit,
         skip
-    }
+    };
 }
 
