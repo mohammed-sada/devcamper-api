@@ -16,8 +16,35 @@ async function getCourses(id, select) {
     }
 }
 
+async function getCourse(id) {
+    return await Course.findById(id);
+}
 
+
+async function createCourse(course) {
+    return await Course.create(course);
+}
+
+async function updateCourse(id, course) {
+    const newCourse = await Course.updateOne({
+        _id: id
+    }, course);
+    console.log(newCourse);
+    return newCourse.modifiedCount === 1;
+}
+
+async function deleteCourse(id) {
+    const course = await Course.deleteOne({
+        _id: id
+    });
+
+    return course.deletedCount === 1;
+}
 
 module.exports = {
     getCourses,
+    getCourse,
+    createCourse,
+    updateCourse,
+    deleteCourse
 };

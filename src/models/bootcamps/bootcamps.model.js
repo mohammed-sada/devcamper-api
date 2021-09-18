@@ -1,9 +1,9 @@
 const Bootcamp = require("./bootcamps.mongo");
 const geocoder = require("../../utils/geocoder");
 
-// async function findBootcamp(filter) {
-//     return await Bootcamp.find(filter)
-// }
+async function findBootcamp(filter) {
+    return await Bootcamp.find(filter);
+}
 
 async function getBootcampsCount() {
     return await Bootcamp.countDocuments();
@@ -22,19 +22,19 @@ async function createBootcamp(bootcamp) {
 }
 
 async function updateBootcamp(id, bootcamp) {
-    const updatedBootcamp = await Bootcamp.updateOne({
+    const newBootcamp = await Bootcamp.updateOne({
         _id: id
     }, bootcamp);
 
-    return updatedBootcamp.matchedCount === 1 && updatedBootcamp.modifiedCount === 1;
+    return newBootcamp.modifiedCount === 1;
 }
 
 async function deleteBootcamp(id) {
-    const deletedBootcamp = await Bootcamp.deleteOne({
+    const bootcamp = await Bootcamp.deleteOne({
         _id: id
     });
 
-    return deletedBootcamp.deletedCount === 1;
+    return bootcamp.deletedCount === 1;
 }
 
 async function getBootcampsByRadius(zipcode, distance) {
@@ -50,6 +50,7 @@ async function getBootcampsByRadius(zipcode, distance) {
 }
 
 module.exports = {
+    findBootcamp,
     getBootcampsCount,
     getBootcamps,
     getBootcamp,

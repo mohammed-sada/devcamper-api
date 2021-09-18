@@ -86,15 +86,15 @@ const httpGetBootcamp = asyncHandler(async (req, res, next) => {
 });
 
 const httpCreateBootcamp = asyncHandler(async (req, res, next) => {
-    const createdBootcamp = await createBootcamp(req.body);
-    res.status(200).json({ success: true, data: createdBootcamp });
+    const bootcamp = await createBootcamp(req.body);
+    res.status(200).json({ success: true, data: bootcamp });
 });
 
 const httpUpdateBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
-    const updatedBootcamp = await updateBootcamp(id, req.body);
-    if (!updatedBootcamp) {
+    const bootcamp = await updateBootcamp(id, req.body);
+    if (!bootcamp) {
         return next(new ErrorResponse("Nothing was modified", 400));
     }
     res.status(200).json({ success: true });
@@ -103,12 +103,12 @@ const httpUpdateBootcamp = asyncHandler(async (req, res, next) => {
 const httpDeleteBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
-    const deletedBootcamp = await deleteBootcamp(id);
+    const bootcamp = await deleteBootcamp(id);
 
-    if (!deletedBootcamp) {
+    if (!bootcamp) {
         return next(new ErrorResponse("Nothing was deleted", 400));
     }
-    res.status(200).json({ success: true, data: {} });
+    res.status(200).json({ success: true });
 });
 
 const httpGetBootcampsByRadius = asyncHandler(async (req, res, next) => {
