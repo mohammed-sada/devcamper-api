@@ -3,7 +3,7 @@ const asyncHandler = require("../middleware/async");
 const { findBootcamp } = require("../models/bootcamps/bootcamps.model");
 
 const {
-    getCourses,
+    getBootcampCourses,
     getCourse,
     createCourse,
     updateCourse,
@@ -12,22 +12,17 @@ const {
 
 const httpGetCourses = asyncHandler(async (req, res) => {
     const { bootcampId } = req.params;
-    const reqQuery = { ...req.query };
 
-    const removeFields = ["select"];
-    removeFields.forEach(param => delete reqQuery[param]);
-    let select;
-    if (req.query.select) {
-        select = req.query.select.split(",").join(" ");
+    if (bootcampId) {
+        const courses = await getBootcampCourses(bootcampId);
+        return res.status(200).json({
+            success: true,
+            count: courses.length,
+            data: courses
+        });
     }
 
-    const courses = await getCourses(bootcampId, select);
-
-    res.status(200).json({
-        success: true,
-        count: courses.length,
-        data: courses
-    });
+    res.status(200).json(res.advancedResults);
 });
 
 const httpGetCourse = asyncHandler(async (req, res, next) => {

@@ -4,8 +4,6 @@ const asyncHandler = require("../middleware/async");
 
 const {
     findBootcamp,
-    getBootcampsCount,
-    getBootcamps,
     getBootcamp,
     createBootcamp,
     updateBootcamp,
@@ -15,66 +13,9 @@ const {
 
 
 const httpGetBootcamps = asyncHandler(async (req, res, next) => {
-    let query;
 
-    // Copy req.query
-    const reqQuery = { ...req.query };
 
-    // Fields to exclude
-    const removeFields = ["sort", "select", "page", "limit"];
-
-    // Loop over removeFields and delete them from reqQuery
-    removeFields.forEach(param => delete reqQuery[param]);
-
-    // Create query string
-    let queryStr = JSON.stringify(reqQuery);
-
-    // $gt, $lte, $in, etc... => these are mongoose operators
-    // \b => word boundry charachter for matching | g => global, so it will look further than just the first one it finds 
-    queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
-
-    // Return back to JS
-    query = JSON.parse(queryStr);
-
-    // Select fields
-    let sortBy;
-    if (req.query.sort) {
-        sortBy = req.query.sort.split(",").join(" ");
-    } else {
-        sortBy = "-createdAt";
-    }
-
-    // Sort fields
-    let select;
-    if (req.query.select) {
-        select = req.query.select.split(",").join(" ");
-    }
-
-    // Pagination
-    const page = Math.abs(req.query.page || 1);
-    const limit = Math.abs(req.query.limit || 1);
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const total = await getBootcampsCount();
-
-    const pagination = {};
-
-    if ((startIndex > 0 && startIndex < total)) {
-        pagination.prev = {
-            page: page - 1,
-            limit
-        };
-    }
-    if (endIndex < total) {
-        pagination.next = {
-            page: page + 1,
-            limit
-        };
-    }
-
-    // Excute the query
-    const bootcamps = await getBootcamps(query, sortBy, select, startIndex, limit);
-    res.status(200).json({ success: true, count: bootcamps.length, pagination, data: bootcamps });
+    res.status(200).json(res.advancedResults);
 });
 
 const httpGetBootcamp = asyncHandler(async (req, res, next) => {

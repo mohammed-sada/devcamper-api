@@ -1,19 +1,12 @@
 const Course = require("./courses.mongo");
 
-async function getCourses(id, select) {
-    if (id) {
-        return await Course.find({
-            bootcamp: id
-        }).populate({
-            path: "bootcamp",
-            select
-        });
-    } else {
-        return await Course.find({}).populate({
-            path: "bootcamp",
-            select
-        });
-    }
+async function getBootcampCourses(id) {
+    return await Course.find({
+        bootcamp: id
+    }).populate({
+        path: "bootcamp",
+        select: "name description"
+    });
 }
 
 async function getCourse(id) {
@@ -41,7 +34,7 @@ async function deleteCourse(id) {
 }
 
 module.exports = {
-    getCourses,
+    getBootcampCourses,
     getCourse,
     createCourse,
     updateCourse,

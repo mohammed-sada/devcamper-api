@@ -49,7 +49,7 @@ async function startServer() {
     // Handle unhandled promise rejections
     // ex. DB connection failed
     process.on("unhandledRejection", (err, promise) => {
-        console.log(`Error : ${err.message}`.red.bold);
+        console.log(`Error : ${err.stack}`.red.bold);
 
         // close the server & exit process with failure(1)
         server.close(() => process.exit(1));

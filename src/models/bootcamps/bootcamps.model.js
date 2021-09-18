@@ -5,14 +5,6 @@ async function findBootcamp(id) {
     return await Bootcamp.findById(id);
 }
 
-async function getBootcampsCount() {
-    return await Bootcamp.countDocuments();
-}
-
-async function getBootcamps(query, sort, select, skip, limit) {
-    return await Bootcamp.find(query).sort(sort).select(select).skip(skip).limit(limit).populate("courses");
-}
-
 async function getBootcamp(id) {
     return await Bootcamp.findById(id, "-__v").populate("courses");
 }
@@ -57,8 +49,6 @@ async function uploadBootcampPhoto(id, photoName) {
 
 module.exports = {
     findBootcamp,
-    getBootcampsCount,
-    getBootcamps,
     getBootcamp,
     createBootcamp,
     updateBootcamp,
