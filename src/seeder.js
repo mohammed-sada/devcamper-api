@@ -22,7 +22,7 @@ async function importData() {
 
         console.log("Importing Data...".green);
         await Bootcamp.create(bootcamps);
-        await Course.create(courses);
+        // await Course.create(courses);
         console.log("Importing Data Completed 🔥".green.inverse);
 
         process.exit(0);

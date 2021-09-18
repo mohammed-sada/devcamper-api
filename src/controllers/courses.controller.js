@@ -65,6 +65,7 @@ const httpDeleteCourse = asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
     const course = await deleteCourse(id);
+
     if (!course) {
         return next(new ErrorResponse("Nothing was deleted", 400));
     }

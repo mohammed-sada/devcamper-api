@@ -34,11 +34,10 @@ async function updateCourse(id, course) {
 }
 
 async function deleteCourse(id) {
-    const course = await Course.deleteOne({
-        _id: id
-    });
+    const course = await Course.findById(id);
+    return await course.remove();
 
-    return course.deletedCount === 1;
+    // return course.deletedCount === 1;
 }
 
 module.exports = {

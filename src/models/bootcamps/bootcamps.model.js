@@ -14,7 +14,7 @@ async function getBootcamps(query, sort, select, skip, limit) {
 }
 
 async function getBootcamp(id) {
-    return await Bootcamp.findById(id, "-__v");
+    return await Bootcamp.findById(id, "-__v").populate("courses");
 }
 
 async function createBootcamp(bootcamp) {
