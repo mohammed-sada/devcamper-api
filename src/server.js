@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
+const expressFileUpload = require("express-fileupload");
 
 // Load env vars
 require("dotenv").config();
@@ -16,6 +17,7 @@ const coursesRouter = require("./routes/courses.router");
 
 const app = express();
 
+
 // Body parser
 app.use(express.json());
 
@@ -23,6 +25,10 @@ app.use(express.json());
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use(expressFileUpload());
 
 // Mount routers
 app.use("/api/v1/bootcamps", bootcampsRouter);
