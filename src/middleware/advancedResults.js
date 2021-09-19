@@ -1,4 +1,3 @@
-
 const advancedResults = (model, populate) => async (req, res, next) => {
     let query;
 
@@ -21,7 +20,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
     // Return back to JS
     query = JSON.parse(queryStr);
 
-    // Select fields
+    // Sort fields
     let sort;
     if (req.query.sort) {
         sort = req.query.sort.split(",").join(" ");
@@ -29,7 +28,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
         sort = "-createdAt";
     }
 
-    // Sort fields
+    // Select fields
     let select;
     if (req.query.select) {
         select = req.query.select.split(",").join(" ");
@@ -68,6 +67,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
     res.advancedResults = {
         success: true,
         count: results.length,
+        pagination,
         data: results
     };
     next();

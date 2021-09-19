@@ -13,8 +13,6 @@ const {
 
 
 const httpGetBootcamps = asyncHandler(async (req, res, next) => {
-
-
     res.status(200).json(res.advancedResults);
 });
 
@@ -24,12 +22,11 @@ const httpGetBootcamp = asyncHandler(async (req, res, next) => {
     if (!bootcamp) {
         // Not found in DB, but the other one in the catch block is:  Not correctly formatted id
         return next(new ErrorResponse(`Bootcamp not found with id: ${id}`, 404)); // Pass the error to express
-
     }
     res.status(200).json({ success: true, data: bootcamp });
 });
 
-const httpCreateBootcamp = asyncHandler(async (req, res, next) => {
+const httpCreateBootcamp = asyncHandler(async (req, res) => {
     const bootcamp = await createBootcamp(req.body);
     res.status(200).json({ success: true, data: bootcamp });
 });
@@ -48,14 +45,13 @@ const httpDeleteBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
     const bootcamp = await deleteBootcamp(id);
-
     if (!bootcamp) {
         return next(new ErrorResponse("Nothing was deleted", 400));
     }
     res.status(200).json({ success: true });
 });
 
-const httpGetBootcampsByRadius = asyncHandler(async (req, res, next) => {
+const httpGetBootcampsByRadius = asyncHandler(async (req, res) => {
     const { zipcode, distance } = req.params;
 
     const bootcamps = await getBootcampsByRadius(zipcode, distance);
@@ -101,6 +97,7 @@ const httpUploadBootcampPhoto = asyncHandler(async (req, res, next) => {
         });
     });
 });
+
 module.exports = {
     httpGetBootcamps,
     httpGetBootcamp,

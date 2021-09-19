@@ -22,7 +22,6 @@ async function updateCourse(id, course) {
     const newCourse = await Course.updateOne({
         _id: id
     }, course);
-    console.log(newCourse);
     return newCourse.modifiedCount === 1;
 }
 

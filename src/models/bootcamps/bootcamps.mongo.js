@@ -125,7 +125,7 @@ BootcampSchema.pre("save", async function (next) {
     } = (await geocoder.geocode(this.address))[0];
 
     this.location = {
-        type: "point",
+        type: "Point",
         coordinates: [longitude, latitude],
         formattedAddress,
         street: streetName,
@@ -142,8 +142,8 @@ BootcampSchema.pre("save", async function (next) {
 
 // Cascade delete courses when a bootcamp is deleted
 BootcampSchema.pre("deleteOne", async function (next) {
-    console.log(`this:\n${this}`);
-    const id = this.getQuery()["_id"]; console.log(`Courses being removed from bootcamp ${id}`);
+    const id = this.getQuery()["_id"];
+    console.log(`Courses being removed from bootcamp ${id}`);
     await Course.deleteMany({ bootcamp: id });
     next();
 });

@@ -21,7 +21,7 @@ const CourseSchema = new mongoose.Schema({
     minimumSkill: {
         type: String,
         enum: ["beginner", "intermediate", "advanced", "all levels"],
-        required: [true, "Please add a minimum skill "]
+        required: [true, "Please add a minimum skill"]
     },
     scholarshipAvailable: {
         type: Boolean,
@@ -66,9 +66,9 @@ CourseSchema.statics.getAverageCost = async function (bootcampId) {
 CourseSchema.post("save", async function () {
     this.constructor.getAverageCost(this.bootcamp);
 });
+
 // Call getAverageCost before delete
 CourseSchema.pre("remove", async function () {
-
     this.constructor.getAverageCost(this.bootcamp);
 });
 

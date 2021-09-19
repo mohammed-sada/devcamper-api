@@ -19,7 +19,7 @@ const coursesRouter = require("./courses.router");
 const bootcampsRouter = express.Router();
 
 // Re-route into other resourse routers
-bootcampsRouter.use("/:bootcampId/courses", coursesRouter);
+bootcampsRouter.use("/:bootcampId/courses", coursesRouter); // forwarding
 
 bootcampsRouter.route("/").get(advancedResults(Bootcamp, "courses"), httpGetBootcamps).post(httpCreateBootcamp);
 bootcampsRouter.route("/:id").get(httpGetBootcamp).put(httpUpdateBootcamp).delete(httpDeleteBootcamp);

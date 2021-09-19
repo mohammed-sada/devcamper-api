@@ -31,7 +31,7 @@ const httpGetCourse = asyncHandler(async (req, res, next) => {
     if (!course) {
         return next(new ErrorResponse(`Course with id: ${id} is not found  `, 404));
     }
-    res.status(201).json({ success: true, data: course });
+    res.status(200).json({ success: true, data: course });
 });
 
 const httpCreateCourse = asyncHandler(async (req, res, next) => {
