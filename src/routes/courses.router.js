@@ -8,8 +8,7 @@ const {
     httpGetCourse,
     httpCreateCourse,
     httpUpdateCourse,
-    httpDeleteCourse
-} = require("../controllers/courses.controller");
+    httpDeleteCourse } = require("../controllers/courses.controller");
 
 const coursesRouter = express.Router({ mergeParams: true });
 

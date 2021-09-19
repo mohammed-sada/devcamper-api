@@ -14,6 +14,7 @@ const errorHandler = require("./middleware/error");
 // Route files
 const bootcampsRouter = require("./routes/bootcamps.router");
 const coursesRouter = require("./routes/courses.router");
+const usersRouter = require("./routes/users.router");
 
 const app = express();
 
@@ -33,6 +34,8 @@ app.use(expressFileUpload());
 // Mount routers
 app.use("/api/v1/bootcamps", bootcampsRouter);
 app.use("/api/v1/courses", coursesRouter);
+app.use("/api/v1/auth", usersRouter);
+
 
 app.use(errorHandler); // We have to pass it after the router in order for the it to catch the error
 
