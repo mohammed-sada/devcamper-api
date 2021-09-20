@@ -33,11 +33,6 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    // user: {
-    //     type: mongoose.Schema.ObjectId,
-    //     ref: "Bootcamp",
-    //     required: true
-    // }
 });
 
 UserSchema.pre("save", async function (next) {

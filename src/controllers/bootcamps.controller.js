@@ -17,7 +17,9 @@ const httpGetBootcamps = asyncHandler(async (req, res, next) => {
 
 const httpGetBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const bootcamp = await getBootcamp(id);
+    const bootcamp = await getBootcamp({
+        _id: id
+    });
     if (!bootcamp) {
         // Not found in DB, but the other one in the catch block is:  Not correctly formatted id
         return next(new ErrorResponse(`Bootcamp not found with id: ${id}`, 404)); // Pass the error to express
@@ -25,7 +27,17 @@ const httpGetBootcamp = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data: bootcamp });
 });
 
-const httpCreateBootcamp = asyncHandler(async (req, res) => {
+const httpCreateBootcamp = asyncHandler(async (req, res, next) => {
+    req.body.user = req.user.id;
+
+    const publishedBootcamp = await getBootcamp({
+        user: req.user.id
+    });
+
+    if (publishedBootcamp && req.user.role !== "admin") {
+        return next(new ErrorResponse(`The user with id: ${req.user.id} has already published a bootcamp`, 400));
+    }
+
     const bootcamp = await createBootcamp(req.body);
     res.status(200).json({ success: true, data: bootcamp });
 });
@@ -33,7 +45,16 @@ const httpCreateBootcamp = asyncHandler(async (req, res) => {
 const httpUpdateBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
-    const bootcamp = await updateBootcamp(id, req.body);
+    let bootcamp = await getBootcamp({
+        _id: id
+    });
+
+    // Make sure user is bootcamp owner
+    if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
+        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to update this bootcamp`, 403));
+    }
+
+    bootcamp = await updateBootcamp(id, req.body);
     if (!bootcamp) {
         return next(new ErrorResponse("Nothing was modified", 400));
     }
@@ -43,7 +64,15 @@ const httpUpdateBootcamp = asyncHandler(async (req, res, next) => {
 const httpDeleteBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
-    const bootcamp = await deleteBootcamp(id);
+    let bootcamp = await getBootcamp({
+        _id: id
+    });
+
+    if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
+        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to delete this bootcamp`, 403));
+    }
+
+    bootcamp = await deleteBootcamp(id);
     if (!bootcamp) {
         return next(new ErrorResponse("Nothing was deleted", 400));
     }
@@ -64,7 +93,13 @@ const httpGetBootcampsByRadius = asyncHandler(async (req, res) => {
 const httpUploadBootcampPhoto = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
-    const bootcamp = await getBootcamp(id);
+    let bootcamp = await getBootcamp({
+        _id: id
+    });
+
+    if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
+        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to update this bootcamp`, 403));
+    }
 
     if (!bootcamp) {
         return next(new ErrorResponse(`Bootcamp with id ${id} is not found`, 404));

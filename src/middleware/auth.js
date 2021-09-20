@@ -21,7 +21,11 @@ exports.protect = asyncHandler((async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        req.user = await findUser(decoded.id);
+        const user = await findUser(decoded.id);
+        if (!user) {
+            return next(new ErrorResponse("no user found", 404));
+        }
+        req.user = user;
         next();
     } catch (err) {
         return next(new ErrorResponse("https://youtu.be/RfiQYRn7fBg", 401));
