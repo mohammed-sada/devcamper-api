@@ -1,9 +1,6 @@
 const Bootcamp = require("./bootcamps.mongo");
 const geocoder = require("../../utils/geocoder");
 
-async function findBootcamp(id) {
-    return await Bootcamp.findById(id);
-}
 
 async function getBootcamp(id) {
     return await Bootcamp.findById(id, "-__v").populate("courses");

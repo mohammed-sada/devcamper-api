@@ -59,11 +59,13 @@ const httpUpdateCourse = asyncHandler(async (req, res, next) => {
 const httpDeleteCourse = asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const course = await deleteCourse(id);
-
+    let course = await getCourse(id);
     if (!course) {
         return next(new ErrorResponse("Nothing was deleted", 400));
     }
+
+    course = await deleteCourse(id);
+
     res.status(200).json({ success: true });
 });
 

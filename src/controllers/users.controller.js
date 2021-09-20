@@ -3,7 +3,8 @@ const asyncHandler = require("../middleware/async");
 
 const {
     registerUser,
-    getUser } = require("../models/users/users.model");
+    getUser,
+} = require("../models/users/users.model");
 
 const httpRegisterUser = asyncHandler(async (req, res) => {
     const user = await registerUser(req.body);
@@ -51,7 +52,20 @@ const sendTokenResponse = function (user, statusCode, res) {
 
 };
 
+const httpGetMe = asyncHandler(async (req, res, next) => {
+    // const user = await findUser(req.user.id);
+    // if (!user) {
+    //     return next(new ErrorResponse("User not found", 400));
+    // }
+
+    res.status(200).json({
+        successs: true,
+        data: req.user
+    });
+});
+
 module.exports = {
     httpRegisterUser,
-    httpLoginUser
+    httpLoginUser,
+    httpGetMe
 };

@@ -3,7 +3,6 @@ const ErrorResponse = require("../utils/ErrorResponse");
 const asyncHandler = require("../middleware/async");
 
 const {
-    findBootcamp,
     getBootcamp,
     createBootcamp,
     updateBootcamp,
@@ -65,7 +64,7 @@ const httpGetBootcampsByRadius = asyncHandler(async (req, res) => {
 const httpUploadBootcampPhoto = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
-    const bootcamp = await findBootcamp(id);
+    const bootcamp = await getBootcamp(id);
 
     if (!bootcamp) {
         return next(new ErrorResponse(`Bootcamp with id ${id} is not found`, 404));
