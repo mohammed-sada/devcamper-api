@@ -45,7 +45,6 @@ async function uploadBootcampPhoto(id, photoName) {
 }
 
 module.exports = {
-    findBootcamp,
     getBootcamp,
     createBootcamp,
     updateBootcamp,

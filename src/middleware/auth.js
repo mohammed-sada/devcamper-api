@@ -15,7 +15,7 @@ exports.protect = asyncHandler((async (req, res, next) => {
     // }
 
     if (!token) {
-        return next(new ErrorResponse("Unauthorized to access this route", 401));
+        return next(new ErrorResponse("https://youtu.be/RfiQYRn7fBg", 401));
     }
 
     try {
@@ -24,6 +24,15 @@ exports.protect = asyncHandler((async (req, res, next) => {
         req.user = await findUser(decoded.id);
         next();
     } catch (err) {
-        return next(new ErrorResponse("Unauthorized to access this route", 401));
+        return next(new ErrorResponse("https://youtu.be/RfiQYRn7fBg", 401));
     }
 }));
+
+exports.authorize = (...roles) => (req, res, next) => {
+    const { role } = req.user;
+
+    if (!roles.includes(role)) {
+        return next(new ErrorResponse(`User role '${role}' is unauthorized to access this route: https://youtu.be/RfiQYRn7fBg`, 403));
+    }
+    next();
+};
