@@ -12,8 +12,14 @@ async function getUser(filter, projection) {
     return await User.findOne(filter, projection);
 }
 
+async function updateUser(id, details) {
+    const user = await User.updateOne({ _id: id }, details);
+    return user.modifiedCount === 1;
+}
+
 module.exports = {
     findUser,
     registerUser,
-    getUser
+    getUser,
+    updateUser
 };

@@ -5,7 +5,9 @@ const {
     httpLoginUser,
     httpGetMe,
     httpForgotPassword,
-    httpResetPassword } = require("../controllers/users.controller");
+    httpResetPassword,
+    httpUpdateDetails,
+    httpUpdatePassword } = require("../controllers/users.controller");
 
 const { protect } = require("../middleware/auth");
 
@@ -16,5 +18,7 @@ usersRouter.post("/login", httpLoginUser);
 usersRouter.get("/me", protect, httpGetMe);
 usersRouter.get("/forgotpassword", httpForgotPassword);
 usersRouter.put("/resetpassword/:resettoken", httpResetPassword);
+usersRouter.put("/updatedetails", protect, httpUpdateDetails);
+usersRouter.put("/updatepassword", protect, httpUpdatePassword);
 
 module.exports = usersRouter;

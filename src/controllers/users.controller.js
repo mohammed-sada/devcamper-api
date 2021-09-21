@@ -6,6 +6,7 @@ const sendEmail = require("../utils/sendEmail");
 const {
     registerUser,
     getUser,
+    updateUser
 } = require("../models/users/users.model");
 
 const httpRegisterUser = asyncHandler(async (req, res) => {
@@ -99,6 +100,35 @@ const httpResetPassword = asyncHandler(async (req, res, next) => {
 
 });
 
+const httpUpdateDetails = asyncHandler(async (req, res, next) => {
+    const { name, email } = req.body;
+
+    const user = await updateUser(req.user.id, { name, email });
+
+    if (!user) {
+        return next(new ErrorResponse("Nothing was modified", 400));
+    }
+
+    res.status(200).json({
+        success: true
+    });
+});
+
+const httpUpdatePassword = asyncHandler(async (req, res, next) => {
+    const user = await getUser({
+        _id: req.user.id
+    }, "+password");
+    const isMatch = await user.matchPassword(req.body.currentPassword);
+
+    if (!isMatch) {
+        return next(new ErrorResponse("Password is incorrect", 400));
+    }
+
+    user.password = req.body.newPassword;
+    await user.save();
+
+    sendTokenResponse(user, 200, res);
+});
 
 // Get token from model, create cookie and send response 
 const sendTokenResponse = function (user, statusCode, res) {
@@ -125,5 +155,7 @@ module.exports = {
     httpLoginUser,
     httpGetMe,
     httpForgotPassword,
-    httpResetPassword
+    httpResetPassword,
+    httpUpdateDetails,
+    httpUpdatePassword
 };
