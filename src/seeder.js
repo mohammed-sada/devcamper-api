@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const mongoose = require("mongoose");
+const connectDb = require("./config/db");
 
 require("colors");
 require("dotenv").config();
@@ -12,7 +12,7 @@ const Course = require("./models/courses/courses.mongo");
 const User = require("./models/users/users.mongo");
 
 // Connect DB
-mongoose.connect(process.env.MONGO_URI);
+connectDb();
 
 // Import data into DB
 async function importData() {

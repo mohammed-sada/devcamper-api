@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 const ErrorResponse = require('../utils/ErrorResponse');
 const asyncHandler = require('./async');
+
 const { findUser } = require("../models/users/users.model");
+const { getBootcamp } = require("../models/bootcamps/bootcamps.model");
 
 exports.protect = asyncHandler((async (req, res, next) => {
     let token;
@@ -37,6 +39,24 @@ exports.authorize = (...roles) => (req, res, next) => {
 
     if (!roles.includes(role)) {
         return next(new ErrorResponse(`User role '${role}' is unauthorized to access this route: https://youtu.be/RfiQYRn7fBg`, 403));
+    }
+    next();
+};
+
+exports.checkIfExistAndIsOwner = async (req, res, next) => {
+    const id = req.params.id;
+
+    let bootcamp = await getBootcamp({
+        _id: id
+    });
+
+    if (!bootcamp) {
+        return next(new ErrorResponse(`Bootcamp with id ${id} is not found`, 404));
+    }
+
+
+    if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
+        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to update this bootcamp`, 403));
     }
     next();
 };

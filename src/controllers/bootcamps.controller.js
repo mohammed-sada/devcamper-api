@@ -45,37 +45,16 @@ const httpCreateBootcamp = asyncHandler(async (req, res, next) => {
 const httpUpdateBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
-    let bootcamp = await getBootcamp({
-        _id: id
-    });
+    await updateBootcamp(id, req.body);
 
-    // Make sure user is bootcamp owner
-    if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
-        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to update this bootcamp`, 403));
-    }
-
-    bootcamp = await updateBootcamp(id, req.body);
-    if (!bootcamp) {
-        return next(new ErrorResponse("Nothing was modified", 400));
-    }
     res.status(200).json({ success: true });
 });
 
 const httpDeleteBootcamp = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
-    let bootcamp = await getBootcamp({
-        _id: id
-    });
+    await deleteBootcamp(id);
 
-    if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
-        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to delete this bootcamp`, 403));
-    }
-
-    bootcamp = await deleteBootcamp(id);
-    if (!bootcamp) {
-        return next(new ErrorResponse("Nothing was deleted", 400));
-    }
     res.status(200).json({ success: true });
 });
 
@@ -93,17 +72,6 @@ const httpGetBootcampsByRadius = asyncHandler(async (req, res) => {
 const httpUploadBootcampPhoto = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
-    let bootcamp = await getBootcamp({
-        _id: id
-    });
-
-    if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
-        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to update this bootcamp`, 403));
-    }
-
-    if (!bootcamp) {
-        return next(new ErrorResponse(`Bootcamp with id ${id} is not found`, 404));
-    }
 
     const { file } = req.files;
     if (!file) {
@@ -131,6 +99,7 @@ const httpUploadBootcampPhoto = asyncHandler(async (req, res, next) => {
         });
     });
 });
+
 
 module.exports = {
     httpGetBootcamps,

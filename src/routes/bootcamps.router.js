@@ -1,7 +1,7 @@
 const express = require("express");
 
 const advancedResults = require("../middleware/advancedResults");
-const { protect, authorize } = require("../middleware/auth");
+const { protect, authorize, checkIfExistAndIsOwner } = require("../middleware/auth");
 
 const Bootcamp = require("../models/bootcamps/bootcamps.mongo");
 
@@ -29,13 +29,13 @@ bootcampsRouter.route("/")
 
 bootcampsRouter.route("/:id")
     .get(httpGetBootcamp)
-    .put(protect, authorize("admin", "publisher"), httpUpdateBootcamp)
-    .delete(protect, authorize("admin", "publisher"), httpDeleteBootcamp);
+    .put(protect, authorize("admin", "publisher"), checkIfExistAndIsOwner, httpUpdateBootcamp)
+    .delete(protect, authorize("admin", "publisher"), checkIfExistAndIsOwner, httpDeleteBootcamp);
 
 bootcampsRouter.route("/radius/:zipcode/:distance")
     .get(httpGetBootcampsByRadius);
 
 bootcampsRouter.route("/:id/photo").
-    put(protect, authorize("admin", "publisher"), httpUploadBootcampPhoto);
+    put(protect, authorize("admin", "publisher"), checkIfExistAndIsOwner, httpUploadBootcampPhoto);
 
 module.exports = bootcampsRouter;
