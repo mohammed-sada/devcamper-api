@@ -1,24 +1,31 @@
 const express = require("express");
 
 const {
-    httpRegisterUser,
-    httpLoginUser,
-    httpGetMe,
-    httpForgotPassword,
-    httpResetPassword,
-    httpUpdateDetails,
-    httpUpdatePassword } = require("../controllers/users.controller");
+    httpGetUsers,
+    httpGetUser,
+    httpCreateUser,
+    httpUpdateUser,
+    httpDeleteUser } = require("../controllers/users.controller");
 
-const { protect } = require("../middleware/auth");
+
+const advancedResults = require("../middleware/advancedResults");
+const { protect, authorize } = require("../middleware/auth");
+
+const User = require("../models/users/users.mongo");
 
 const usersRouter = express.Router();
 
-usersRouter.post("/register", httpRegisterUser);
-usersRouter.post("/login", httpLoginUser);
-usersRouter.get("/me", protect, httpGetMe);
-usersRouter.get("/forgotpassword", httpForgotPassword);
-usersRouter.put("/resetpassword/:resettoken", httpResetPassword);
-usersRouter.put("/updatedetails", protect, httpUpdateDetails);
-usersRouter.put("/updatepassword", protect, httpUpdatePassword);
+usersRouter.use(protect, authorize("admin"));
+
+usersRouter.route("/")
+    .get(advancedResults(User), httpGetUsers)
+    .post(httpCreateUser);
+
+usersRouter.route("/:id")
+    .get(httpGetUser)
+    .put(httpUpdateUser)
+    .delete(httpDeleteUser);
+
+
 
 module.exports = usersRouter;

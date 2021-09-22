@@ -12,7 +12,7 @@ function errorHandler(err, req, res, next) {
 
     // Mongoose duplicate key error
     if (err.code === 11000) {
-        const message = "Please remove duplicate fields";
+        const message = "This email already exist";
         err = new ErrorResponse(message, 400);
     }
 

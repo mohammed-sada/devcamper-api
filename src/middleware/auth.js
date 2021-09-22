@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const ErrorResponse = require('../utils/ErrorResponse');
 const asyncHandler = require('./async');
 
-const { findUser } = require("../models/users/users.model");
+const { getUser } = require("../models/users/users.model");
 const { getBootcamp } = require("../models/bootcamps/bootcamps.model");
 
 exports.protect = asyncHandler((async (req, res, next) => {
@@ -23,7 +23,9 @@ exports.protect = asyncHandler((async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        const user = await findUser(decoded.id);
+        const user = await getUser({
+            _id: decoded.id
+        });
         if (!user) {
             return next(new ErrorResponse("no user found", 404));
         }
