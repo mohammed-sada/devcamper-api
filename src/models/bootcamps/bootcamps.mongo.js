@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-const Course = require("../courses/courses.mongo");
 const geocoder = require("../../utils/geocoder");
+const Course = require("../courses/courses.mongo");
+const Review = require("../reviews/reviews.mongo");
 
 const BootcampSchema = new mongoose.Schema({
     name: {
@@ -72,7 +73,7 @@ const BootcampSchema = new mongoose.Schema({
     averageRating: {
         type: Number,
         min: [1, "Rating must be at least 1"],
-        max: [10, "Rating must can not be more than 10"]
+        max: [10, "Rating must not be more than 10"]
     },
     averageCost: Number,
     photo: {
@@ -148,14 +149,21 @@ BootcampSchema.pre("save", async function (next) {
 // Cascade delete courses when a bootcamp is deleted
 BootcampSchema.pre("deleteOne", async function (next) {
     const id = this.getQuery()["_id"];
-    console.log(`Courses being removed from bootcamp ${id}`);
+    console.log(`Courses and reviews being removed from bootcamp ${id}`);
     await Course.deleteMany({ bootcamp: id });
+    await Review.deleteMany({ bootcamp: id });
     next();
 });
 
 // Reverse populate with virtuals
 BootcampSchema.virtual("courses", {
     ref: "Course",
+    localField: "_id",
+    foreignField: "bootcamp",
+    justOne: false // so we get an array
+});
+BootcampSchema.virtual("reviews", {
+    ref: "Review",
     localField: "_id",
     foreignField: "bootcamp",
     justOne: false // so we get an array

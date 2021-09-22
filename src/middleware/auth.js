@@ -58,7 +58,7 @@ exports.checkIfExistAndIsOwner = async (req, res, next) => {
 
 
     if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
-        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to update this bootcamp`, 403));
+        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to do actions on this bootcamp`, 403));
     }
     next();
 };

@@ -10,6 +10,7 @@ require("dotenv").config();
 const Bootcamp = require("./models/bootcamps/bootcamps.mongo");
 const Course = require("./models/courses/courses.mongo");
 const User = require("./models/users/users.mongo");
+const Review = require("./models/reviews/reviews.mongo");
 
 // Connect DB
 mongoose.connect(process.env.MONGO_URI);
@@ -21,11 +22,13 @@ async function importData() {
         const bootcamps = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "_data", "bootcamps.json")));
         const courses = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "_data", "courses.json")));
         const users = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "_data", "users.json")));
+        const reviews = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "_data", "reviews.json")));
 
         console.log("Importing Data...".green);
         await Bootcamp.create(bootcamps);
         await Course.create(courses);
         await User.create(users);
+        await Review.create(reviews);
         console.log("Importing Data Completed 🔥".green.inverse);
 
         process.exit(0);
@@ -41,6 +44,7 @@ async function deleteData() {
         await Bootcamp.deleteMany(); // Delete all of the docs
         await Course.deleteMany();
         await User.deleteMany();
+        await Review.deleteMany();
         console.log("Deleting Data Completed 🔥".red.inverse);
 
         process.exit(0);

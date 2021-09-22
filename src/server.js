@@ -17,6 +17,7 @@ const bootcampsRouter = require("./routes/bootcamps.router");
 const coursesRouter = require("./routes/courses.router");
 const authRouter = require("./routes/auth.router");
 const usersRouter = require("./routes/users.router");
+const reviewsRouter = require("./routes/reviews.router");
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use("/api/v1/bootcamps", bootcampsRouter);
 app.use("/api/v1/courses", coursesRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", usersRouter);
+app.use("/api/v1/reviews", reviewsRouter);
 
 
 app.use(errorHandler); // We have to pass it after the router in order for the it to catch the error
