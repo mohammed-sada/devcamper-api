@@ -62,6 +62,9 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/reviews", reviewsRouter);
 
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+});
 
 app.use(errorHandler); // We have to pass it after the router in order for it to catch the error
 
