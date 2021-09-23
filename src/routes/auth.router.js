@@ -3,6 +3,7 @@ const express = require("express");
 const {
     httpRegisterUser,
     httpLoginUser,
+    httpLogoutUser,
     httpGetMe,
     httpForgotPassword,
     httpResetPassword,
@@ -11,14 +12,15 @@ const {
 
 const { protect } = require("../middleware/auth");
 
-const usersRouter = express.Router();
+const authRouter = express.Router();
 
-usersRouter.post("/register", httpRegisterUser);
-usersRouter.post("/login", httpLoginUser);
-usersRouter.get("/me", protect, httpGetMe);
-usersRouter.get("/forgotpassword", httpForgotPassword);
-usersRouter.put("/resetpassword/:resettoken", httpResetPassword);
-usersRouter.put("/updatedetails", protect, httpUpdateDetails);
-usersRouter.put("/updatepassword", protect, httpUpdatePassword);
+authRouter.post("/register", httpRegisterUser);
+authRouter.post("/login", httpLoginUser);
+authRouter.get("/logout", httpLogoutUser);
+authRouter.get("/me", protect, httpGetMe);
+authRouter.get("/forgotpassword", httpForgotPassword);
+authRouter.put("/resetpassword/:resettoken", httpResetPassword);
+authRouter.put("/updatedetails", protect, httpUpdateDetails);
+authRouter.put("/updatepassword", protect, httpUpdatePassword);
 
-module.exports = usersRouter;
+module.exports = authRouter;

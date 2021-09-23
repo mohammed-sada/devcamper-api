@@ -35,6 +35,19 @@ const httpLoginUser = asyncHandler(async (req, res, next) => {
     sendTokenResponse(user, 200, res);
 });
 
+const httpLogoutUser = asyncHandler(async (req, res, next) => {
+    const options = {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true,
+    };
+    res
+        .status(200)
+        .cookie("token", null)
+        .json({
+            success: true,
+        });
+});
+
 
 const httpGetMe = asyncHandler(async (req, res, next) => {
     // const user = await findUser(req.user.id);
@@ -153,6 +166,7 @@ const sendTokenResponse = function (user, statusCode, res) {
 module.exports = {
     httpRegisterUser,
     httpLoginUser,
+    httpLogoutUser,
     httpGetMe,
     httpForgotPassword,
     httpResetPassword,

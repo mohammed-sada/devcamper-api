@@ -45,7 +45,7 @@ app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/reviews", reviewsRouter);
 
 
-app.use(errorHandler); // We have to pass it after the router in order for the it to catch the error
+app.use(errorHandler); // We have to pass it after the router in order for it to catch the error
 
 const PORT = process.env.PORT || 5000;
 
