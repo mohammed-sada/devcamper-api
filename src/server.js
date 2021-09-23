@@ -4,13 +4,19 @@ const morgan = require("morgan");
 const expressFileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 
+// Security
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+const hpp = require("hpp");
+const cors = require("cors");
+
 // Load env vars
 require("dotenv").config();
 require("colors");
 
 const connectDb = require("./config/db");
 const errorHandler = require("./middleware/error");
-
 
 // Route files
 const bootcampsRouter = require("./routes/bootcamps.router");
@@ -20,6 +26,18 @@ const usersRouter = require("./routes/users.router");
 const reviewsRouter = require("./routes/reviews.router");
 
 const app = express();
+
+app.use(cors());
+app.use(mongoSanitize()); // "email": {"$gt":""}
+app.use(xss());
+
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
+
+app.use(hpp());
 
 
 // Body parser
