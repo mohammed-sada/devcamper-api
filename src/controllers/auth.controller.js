@@ -36,10 +36,10 @@ const httpLoginUser = asyncHandler(async (req, res, next) => {
 });
 
 const httpLogoutUser = asyncHandler(async (req, res, next) => {
-    const options = {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true,
-    };
+    // const options = {
+    //     expires: new Date(Date.now() + 10 * 1000),
+    //     httpOnly: true,
+    // };
     res
         .status(200)
         .cookie("token", null)
@@ -56,7 +56,7 @@ const httpGetMe = asyncHandler(async (req, res, next) => {
     // }
 
     res.status(200).json({
-        successs: true,
+        success: true,
         data: req.user
     });
 });

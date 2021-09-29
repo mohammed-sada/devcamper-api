@@ -86,7 +86,7 @@ const httpUploadBootcampPhoto = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse(`Please upload an image file`, 400));
     }
 
-    file.name = `photo_${id}${path.parse(file.name).ext}`;
+    file.name = `photo_${id}${file.name}`;    // ${path.parse(file.name).ext}
 
     file.mv(`${process.env.UPLOAD_PATH}/${file.name}`, async (err) => {
         if (err) {

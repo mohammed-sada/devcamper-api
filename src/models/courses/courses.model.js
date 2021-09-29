@@ -26,7 +26,7 @@ async function updateCourse(id, course) {
 }
 
 async function deleteCourse(id) {
-    const course = await Course.findById(id);
+    const course = Course.findById(id);
     return await course.remove();
 
     // return course.deletedCount === 1;

@@ -65,6 +65,9 @@ app.use("/api/v1/reviews", reviewsRouter);
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
+app.get("/postman-docs", (req, res) => {
+    res.status(302).redirect("https://documenter.getpostman.com/view/13047367/UUxwDVLQ");
+});
 
 app.use(errorHandler); // We have to pass it after the router in order for it to catch the error
 

@@ -15,6 +15,10 @@ const ReviewSchema = new mongoose.Schema(({
         min: [1, "Rating must be at least 1"],
         max: [10, "Rating must not be more than 10"]
     },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     bootcamp: {
         type: mongoose.Schema.ObjectId,
         ref: "Bootcamp",

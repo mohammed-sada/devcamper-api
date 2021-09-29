@@ -37,7 +37,7 @@ bootcampsRouter.route("/:id")
 bootcampsRouter.route("/radius/:zipcode/:distance")
     .get(httpGetBootcampsByRadius);
 
-bootcampsRouter.route("/:id/photo").
-    put(protect, authorize("admin", "publisher"), checkIfExistAndIsOwner, httpUploadBootcampPhoto);
+bootcampsRouter.route("/:id/photo")
+    .put(protect, authorize("admin", "publisher"), checkIfExistAndIsOwner, httpUploadBootcampPhoto);
 
 module.exports = bootcampsRouter;
