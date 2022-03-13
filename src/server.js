@@ -24,10 +24,15 @@ const coursesRouter = require("./routes/courses.router");
 const authRouter = require("./routes/auth.router");
 const usersRouter = require("./routes/users.router");
 const reviewsRouter = require("./routes/reviews.router");
+const conversationsRouter = require("./routes/conversations.router");
+const messagesRouter = require("./routes/messages.router");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}));
 app.use(mongoSanitize()); // "email": {"$gt":""}
 app.use(xss());
 
@@ -61,6 +66,8 @@ app.use("/api/v1/courses", coursesRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/reviews", reviewsRouter);
+app.use("/api/v1/conversations", conversationsRouter);
+app.use("/api/v1/messages", messagesRouter);
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "index.html"));

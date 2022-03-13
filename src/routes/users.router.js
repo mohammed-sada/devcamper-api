@@ -15,6 +15,9 @@ const User = require("../models/users/users.mongo");
 
 const usersRouter = express.Router();
 
+usersRouter.get('/:id', httpGetUser);
+
+
 usersRouter.use(protect, authorize("admin"));
 
 usersRouter.route("/")
@@ -22,7 +25,6 @@ usersRouter.route("/")
     .post(httpCreateUser);
 
 usersRouter.route("/:id")
-    .get(httpGetUser)
     .put(httpUpdateUser)
     .delete(httpDeleteUser);
 

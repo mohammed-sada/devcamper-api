@@ -10,7 +10,7 @@ const {
     httpUploadBootcampPhoto } = require("../controllers/bootcamps.controller");
 
 const advancedResults = require("../middleware/advancedResults");
-const { protect, authorize, checkIfExistAndIsOwner } = require("../middleware/auth");
+const { protect, authorize, checkIfExist, checkIfOwner } = require("../middleware/auth");
 
 const Bootcamp = require("../models/bootcamps/bootcamps.mongo");
 
@@ -31,13 +31,13 @@ bootcampsRouter.route("/")
 
 bootcampsRouter.route("/:id")
     .get(httpGetBootcamp)
-    .put(protect, authorize("admin", "publisher"), checkIfExistAndIsOwner, httpUpdateBootcamp)
-    .delete(protect, authorize("admin", "publisher"), checkIfExistAndIsOwner, httpDeleteBootcamp);
+    .put(protect, authorize("admin", "publisher"), checkIfExist(Bootcamp), checkIfOwner(Bootcamp), httpUpdateBootcamp)
+    .delete(protect, authorize("admin", "publisher"), checkIfExist(Bootcamp), checkIfOwner(Bootcamp), httpDeleteBootcamp);
 
 bootcampsRouter.route("/radius/:zipcode/:distance")
     .get(httpGetBootcampsByRadius);
 
 bootcampsRouter.route("/:id/photo")
-    .put(protect, authorize("admin", "publisher"), checkIfExistAndIsOwner, httpUploadBootcampPhoto);
+    .put(protect, authorize("admin", "publisher"), checkIfExist(Bootcamp), checkIfOwner(Bootcamp), httpUploadBootcampPhoto);
 
 module.exports = bootcampsRouter;

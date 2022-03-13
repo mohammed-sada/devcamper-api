@@ -39,16 +39,6 @@ const httpCreateCourse = asyncHandler(async (req, res, next) => {
     req.body.bootcamp = req.params.bootcampId;
     req.body.user = req.user.id;
 
-    const bootcamp = await getBootcamp({ _id: req.params.bootcampId });
-
-    if (!bootcamp) {
-        return next(new ErrorResponse(`Bootcamp with id: ${id} is not found  `, 404));
-    }
-
-    if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
-        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to add a course to this bootcamp`, 403));
-    }
-
     const course = await createCourse(req.body);
     res.status(201).json({ success: true, data: course });
 });
@@ -56,30 +46,12 @@ const httpCreateCourse = asyncHandler(async (req, res, next) => {
 const httpUpdateCourse = asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const course = await getCourse(id);
-    if (!course) {
-        return next(new ErrorResponse(`Course with id: ${id} is not found  `, 404));
-    }
-
-    if (course.user.toString() !== req.user.id && req.user.role !== "admin") {
-        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to update this course`, 403));
-    }
-
     await updateCourse(id, req.body);
     res.status(200).json({ success: true });
 });
 
 const httpDeleteCourse = asyncHandler(async (req, res, next) => {
     const { id } = req.params;
-
-    const course = await getCourse(id);
-    if (!course) {
-        return next(new ErrorResponse(`Course with id: ${id} is not found  `, 404));
-    }
-
-    if (course.user.toString() !== req.user.id && req.user.role !== "admin") {
-        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to delete this course`, 403));
-    }
 
     await deleteCourse(id);
     res.status(200).json({ success: true });

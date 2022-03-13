@@ -35,9 +35,9 @@ const httpCreateUser = asyncHandler(async (req, res, next) => {
 });
 
 const httpUpdateUser = asyncHandler(async (req, res, next) => {
-    const { name, email, role } = req.body;
+    const { name, role } = req.body;
 
-    const user = await updateUser(req.params.id, { name, email, role }, false);
+    const user = await updateUser(req.params.id, { name, role }, false);
 
     if (!user) {
         return next(new ErrorResponse(`User with id ${req.params.id} is not found`, 404));

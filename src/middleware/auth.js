@@ -7,11 +7,13 @@ const { getBootcamp } = require("../models/bootcamps/bootcamps.model");
 
 exports.protect = asyncHandler((async (req, res, next) => {
     let token;
+
     const { authorization } = req.headers;
 
     if (authorization && authorization.startsWith("Bearer")) {
         token = authorization.split(" ")[1];
     }
+
     // else if (req.cookies.token) {
     //     token = req.cookies.token;
     // }
@@ -45,20 +47,26 @@ exports.authorize = (...roles) => (req, res, next) => {
     next();
 };
 
-exports.checkIfExistAndIsOwner = async (req, res, next) => {
+exports.checkIfExist = (model) => asyncHandler(async (req, res, next) => {
+    console.log('check 101');
     const id = req.params.id;
 
-    let bootcamp = await getBootcamp({
-        _id: id
-    });
+    let resource = await model.findById(id);
 
-    if (!bootcamp) {
-        return next(new ErrorResponse(`Bootcamp with id ${id} is not found`, 404));
+    if (!resource) {
+        return next(new ErrorResponse(`resource with id ${id} is not found`, 404));
     }
 
+    next();
+});
 
-    if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
-        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to do actions on this bootcamp`, 403));
+exports.checkIfOwner = (model) => asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
+
+    let resource = await model.findById(id);
+
+    if (resource.user.toString() !== req.user.id && req.user.role !== "admin") {
+        return next(new ErrorResponse(`The user with id: ${req.user.id} is unauthorized to do actions on this resource`, 403));
     }
     next();
-};
+});
